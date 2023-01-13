@@ -1,2 +1,2 @@
-# meme-maker 2023
+# image-maker 2023
 javascript study

@@ -3,23 +3,20 @@ const ctx = canvas.getContext("2d"); //자주 사용되므로 변수이름 짧�
 
 canvas.width = 800;
 canvas.height = 800;
-const color = "#FDD35C";
-const color2 = "#47266E";
+ctx.lineWidth = 2;
 
-ctx.fillStyle = color2;
-ctx.fillRect(200, 170, 30, 150); //왼팔
-ctx.fillRect(360, 170, 30, 150); //오른팔
-ctx.fillRect(230, 170, 130, 200); //몸통
-ctx.arc(295, 120, 50, 2 * Math.PI, 0); //머리
-ctx.fill();
+const colors = ["#ffeaa7", "#fdcb6e", "#fab1a0", "#e17055", "#81ecec", "#00cec9", "#a29bfe"];
 
-ctx.beginPath();
-ctx.fillStyle = color;
-ctx.arc(270, 120, 8, 1 * Math.PI, 0); //왼쪽 눈
-ctx.arc(320, 120, 8, 1 * Math.PI, 0); //오른쪽 눈
-ctx.fill();
+function makeLine(event) {
+    ctx.lineTo(event.offsetX, event.offsetY); //마우스 움직이면 선 만들기
+    ctx.stroke(); //선 채우기
+}
 
-ctx.beginPath();
-ctx.fillStyle = color;
-ctx.arc(295, 150, 8, 0, 1 * Math.PI); //입
-ctx.fill();
+function onCanvasClick(event) {
+    ctx.beginPath(); //새 path 시작
+    moveTo(event.offsetX, event.offsetY); //클릭시 좌표 이동
+    ctx.strokeStyle = colors[Math.floor(Math.random() * colors.length)]; //선 색상 랜덤으로 선택
+    canvas.addEventListener("mousemove", makeLine);
+}
+
+canvas.addEventListener("click", onCanvasClick);

@@ -5,6 +5,7 @@ const modeBtn = document.querySelector(".mode-btn");
 const resetBtn = document.querySelector(".reset-btn");
 const eraseBtn = document.querySelector(".erase-btn");
 const lineWidth = document.querySelector(".line-width");
+const textSize = document.querySelector(".text-size");
 const color = document.querySelector(".color-setting__input");
 const colorOptions = Array.from(document.getElementsByClassName("color-setting__btn"));
 const canvas = document.querySelector("canvas");
@@ -18,8 +19,10 @@ canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
 ctx.lineWidth = lineWidth.value;
 ctx.lineCap = "round";
+ctx.font = "30px serif";
 let isDrawing = false; //mousedown의 true/false를 알려주는 변수
 let isFilling = false; //fillingMode의 true/false를 알려주는 변수
+let isTextInserting = false; //text를 삽입 중인지 true/false로 알려주는 변수
 
 function startDrawing() { //mousedown 감지. isDrawing 변수에 반영
     isDrawing = true;
@@ -43,6 +46,10 @@ function setLineWidth(event) {
     ctx.lineWidth = event.target.value;
 }
 
+function setTextSize(event) {
+    ctx.font = `${event.target.value}px serif`;
+}
+
 function setColor(event) {
     let style; //stroke/fillStyle에 색상 한 번에 할당하기 위해 style 변수 생성
     const targetValue = event.target.value;
@@ -51,7 +58,7 @@ function setColor(event) {
 }
 
 function canvasFill() {
-    if (isFilling) { //isFilling = true일 때만 캔버스를 가득 채움
+    if (isFilling === true && isTextInserting === false) {
         ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     }
 }
@@ -68,8 +75,11 @@ function paintingModeChange() {
 }
 
 function canvasReset() {
-    ctx.fillStyle = COLOR_NAME;
-    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    const clear = confirm("Do you want to clear Canvas?");
+    if (clear) { //confirm 창에서 yes 누르면 캔버스 초기화
+        ctx.fillStyle = COLOR_NAME;
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+    }
 }
 
 function canvasErase() {
@@ -84,17 +94,23 @@ function onFileChange(event) {
     image.src = URL.createObjectURL(uploadedFile); //image url 설정
     image.onload = function () { //image가 로딩되면 canvas에 image 삽입
         ctx.drawImage(image, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        fileInput.value = null; //imgae 삽입 후 fileInput 초기화 → 새로운 image 받을 수 있게 함
+        fileInput.value = ""; //imgae 삽입 후 fileInput 초기화 → 새로운 image 받을 수 있게 함
     }
 }
 
 function insertText(event) {
     const typedText = textInput.value;
-    if (typedText !== "") {
-        ctx.save(); //ctx 설정 저장
-        ctx.font = "30px serif";
+    if (isTextInserting) {
         ctx.fillText(typedText, event.offsetX, event.offsetY);
-        ctx.restore(); //저장한 ctx 설정 다시 불러오기
+        textInput.value = null; //textInput 비우기
+        isTextInserting = false; //textInserting mode 끄기
+    }
+}
+
+function textInsertingModeChange(event) { //textInput에 값이 있으면 textInserting mode 켜기
+    const textInputValue = event.target.value;
+    if (textInputValue !== undefined || textInputValue !== null) {
+        isTextInserting = true;
     }
 }
 
@@ -106,23 +122,36 @@ function saveImage() {
     downloadLink.click(); //자동으로 click
 }
 
+//draw관련
 canvas.addEventListener("mousemove", canvasDraw);
 canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("mouseup", endDrawing);
 canvas.addEventListener("mouseleave", endDrawing);
 
+//line-wdith, font-weight관련
 lineWidth.addEventListener("change", setLineWidth);
 
+//font-size 관련
+textSize.addEventListener("change", setTextSize);
+
+//ctx의 color 관련
 color.addEventListener("change", setColor);
 colorOptions.forEach(color => color.addEventListener("click", setColor));
 
+//paint/fill mode 관련
 modeBtn.addEventListener("click", paintingModeChange);
 canvas.addEventListener("click", canvasFill);
 
+//canvas reset 관련
 resetBtn.addEventListener("click", canvasReset);
+
+//canvas 지우개 관련
 eraseBtn.addEventListener("click", canvasErase);
 fileInput.addEventListener("change", onFileChange);
 
+//text 삽입 관련
 canvas.addEventListener("dblclick", insertText);
+textInput.addEventListener("change", textInsertingModeChange);
 
+//canvas 이미지 저장 관련
 saveBtn.addEventListener("click", saveImage);

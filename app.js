@@ -1,6 +1,6 @@
 const saveBtn = document.querySelector(".save-btn");
 const textInput = document.querySelector(".text");
-const fileInput = document.querySelector(".file");
+const fileInput = document.querySelector("#file");
 const modeBtn = document.querySelector(".mode-btn");
 const resetBtn = document.querySelector(".reset-btn");
 const eraseBtn = document.querySelector(".erase-btn");
@@ -59,11 +59,11 @@ function canvasFill() {
 function paintingModeChange() {
     if (isFilling) { //fillMode → drawMode
         isFilling = false;
-        modeBtn.innerText = "Fill";
+        modeBtn.innerText = "🪣 Fill";
     }
     else { //drawMode → fillMode
         isFilling = true;
-        modeBtn.innerText = "Draw";
+        modeBtn.innerText = "🖌️ Draw";
     }
 }
 

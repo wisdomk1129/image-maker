@@ -1,17 +1,117 @@
+@import "reset.css";
+
+body {
+    background-color: antiquewhite;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    padding: 20px;
+}
+
+.title {
+    font-size: 42px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 12px;
+    padding-right: 195px;
+}
+
+.canvas {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
 canvas {
     width: 800px;
     height: 800px;
-    border: 5px solid black;
+    background-color: white;
+    border-radius: 15px;
 }
 
-body {
+.btns,
+.color-setting {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 10px;
 }
 
 .color-setting__btn {
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: 6px solid white;
     cursor: pointer;
+    box-shadow: 2px 2px 2px silver;
+}
+
+.color-setting__input {
+    margin-bottom: 12px;
+    background-color: white;
+    box-shadow: 2px 2px 2px silver;
+}
+
+.color-setting__btn {
+    transition: 0.1s ease-in-out;
+}
+
+.color-setting__btn:hover {
+    transform: scale(1.1);
+}
+
+.btns {
+    row-gap: 20px;
+}
+
+.btns button {
+    width: 240px;
+    background-color: #fdd35c;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: 0.1s ease-in-out;
+    box-shadow: 2px 2px 2px silver;
+}
+
+input.text {
+    width: 214px;
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    padding: 8px 12px;
+    box-shadow: 2px 2px 2px silver;
+}
+
+label {
+    width: 214px;
+    font-size: 16px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    background-color: #fdd35c;
+    border-radius: 10px;
+    padding: 11px 12px;
+    transition: 0.1s ease-in-out;
+    box-shadow: 2px 2px 2px silver;
+}
+
+input#file {
+    display: none;
+}
+
+input.line-width {
+    width: 240px;
+    accent-color: #fdd35c;
+    background-color: white;
+}
+
+.btns button:hover,
+label:hover {
+    filter: brightness(80%);
 }

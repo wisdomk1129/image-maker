@@ -84,7 +84,7 @@ function canvasReset() {
 
 function canvasErase() {
     isFilling = false; //지우개 선 그리기 위해 fillMode off
-    modeBtn.innerText = "Fill";
+    modeBtn.innerText = "🪣 Fill";
     ctx.strokeStyle = COLOR_NAME;
 }
 

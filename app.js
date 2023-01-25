@@ -23,6 +23,7 @@ ctx.font = "30px serif";
 let isDrawing = false; //mousedown의 true/false를 알려주는 변수
 let isFilling = false; //fillingMode의 true/false를 알려주는 변수
 let isTextInserting = false; //text를 삽입 중인지 true/false로 알려주는 변수
+let isErasing = false; //erase 중인지 true/fasle로 알려주는 변수
 
 function startDrawing() { //mousedown 감지. isDrawing 변수에 반영
     isDrawing = true;

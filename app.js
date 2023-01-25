@@ -51,10 +51,12 @@ function setTextSize(event) {
 }
 
 function setColor(event) {
-    let style; //stroke/fillStyle에 색상 한 번에 할당하기 위해 style 변수 생성
-    const targetValue = event.target.value;
-    targetValue === undefined ? style = event.target.dataset.color : style = targetValue;
-    color.value = ctx.strokeStyle = ctx.fillStyle = style; //stroke/fillStyle에 색상 한 번에 할당, color input에 지금 선택된 color 나타나게 함
+    if (isErasing === false) { //erase mode면 색상 선택 안 됨. white로 고정
+        let style; //stroke/fillStyle에 색상 한 번에 할당하기 위해 style 변수 생성
+        const targetValue = event.target.value;
+        targetValue === undefined ? style = event.target.dataset.color : style = targetValue;
+        color.value = ctx.strokeStyle = ctx.fillStyle = style; //stroke/fillStyle에 색상 한 번에 할당, color input에 지금 선택된 color 나타나게 함
+    }
 }
 
 function canvasFill() {
@@ -83,9 +85,25 @@ function canvasReset() {
 }
 
 function canvasErase() {
-    isFilling = false; //지우개 선 그리기 위해 fillMode off
-    modeBtn.innerText = "🪣 Fill";
-    ctx.strokeStyle = COLOR_NAME;
+    if (isErasing) {
+        isFilling = false; //지우개 선 그리기 위해 fillMode off
+        ctx.strokeStyle = COLOR_NAME; //stroke style = white
+    }
+}
+
+function eraseModeChange() {
+    if (isErasing) { //erase off
+        isErasing = false;
+        ctx.restore() //context 설정 복구
+        eraseBtn.innerText = "🧼 Erase on"
+    }
+    else { //erase on
+        isErasing = true;
+        ctx.save() //context 설정 저장
+        modeBtn.innerText = "🪣 Fill";
+        eraseBtn.innerText = "🧼 Erase off"
+    }
+    return canvasErase();
 }
 
 function onFileChange(event) {
@@ -145,8 +163,8 @@ canvas.addEventListener("click", canvasFill);
 //canvas reset 관련
 resetBtn.addEventListener("click", canvasReset);
 
-//canvas 지우개 관련
-eraseBtn.addEventListener("click", canvasErase);
+//canvas erase 관련
+eraseBtn.addEventListener("click", eraseModeChange);
 fileInput.addEventListener("change", onFileChange);
 
 //text 삽입 관련
